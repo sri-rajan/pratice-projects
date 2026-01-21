@@ -1,0 +1,35 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <div id="js-container"></div>
+    <script type="text/babel">
+      function App({ name }) {
+        const output = (
+          <div>
+            <p>Cotton Socks</p>
+            <p>Price: $10</p>
+            <button>Add to Cart</button>
+          </div>
+        );
+        return output;
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("js-container"));
+      root.render(<App name="Sri Rajan" />);
+    </script>
+  </body>
+</html>

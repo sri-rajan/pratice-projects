@@ -1,0 +1,7 @@
+.app-container {
+  max-width: 800px;
+  margin: auto auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

@@ -1,0 +1,197 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatbot</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0px;
+      }
+      .send-button {
+        background-color: rgb(3, 157, 3);
+        color: white;
+        padding: 12px 20px;
+        margin-left: 10px;
+        border: none;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      .chat-input {
+        padding: 12px 15px;
+        border-radius: 10px;
+        border-width: 1px;
+        font-size: 15px;
+        flex-grow: 1;
+      }
+      .chat-input-container {
+        display: flex;
+        margin-bottom: 60px;
+      }
+      .app-container {
+        max-width: 600px;
+        margin: auto auto;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .chat-message-user {
+        display: flex;
+        justify-content: end;
+        align-items: start;
+      }
+      .chat-message-robot {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+      }
+      .chat-message-text {
+        background-color: rgb(202, 202, 202);
+        padding: 15px 20px;
+        border-radius: 10px;
+        margin: 10px;
+        max-width: 300px;
+      }
+      .chat-messages-container {
+        flex-grow: 1;
+        margin-top: 20px;
+        overflow: scroll;
+        scrollbar-width: none;
+      }
+    </style>
+  </head>
+  <body>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <div id="js-container"></div>
+    <script type="text/babel">
+      const ChatBot = {
+        getResponse: function (val) {
+          const response = {
+            hi: "hi how are you",
+            name: "my name is chatbot",
+          };
+          return response[val] || "Don't know";
+        },
+      };
+
+      function ChatInput({ chatMessages, setChatMessages }) {
+        const [inputText, setInputText] = React.useState("");
+        function saveInputTest(event) {
+          const value = event.target.value;
+          setInputText(value);
+        }
+        function sendMessage() {
+          const newMessage = [
+            ...chatMessages,
+            {
+              message: inputText,
+              sender: "user",
+              id: crypto.randomUUID(),
+            },
+          ];
+          setChatMessages(newMessage);
+          setInputText("");
+          const response = ChatBot.getResponse(inputText);
+          setChatMessages([
+            ...newMessage,
+            {
+              message: response,
+              sender: "robot",
+              id: crypto.randomUUID(),
+            },
+          ]);
+        }
+        return (
+          <div className="chat-input-container">
+            <input
+              placeholder="Send a message to Chatbot"
+              size="30"
+              onChange={saveInputTest}
+              value={inputText}
+              className="chat-input"
+            />
+            <button onClick={sendMessage} className="send-button">
+              Send
+            </button>
+          </div>
+        );
+      }
+
+      function ChatMessage(props) {
+        const message = props.message;
+        const sender = props.sender;
+        const userLogo =
+          "https://static.vecteezy.com/system/resources/previews/005/005/788/non_2x/user-icon-in-trendy-flat-style-isolated-on-grey-background-user-symbol-for-your-web-site-design-logo-app-ui-illustration-eps10-free-vector.jpg";
+        const robotLogo =
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwHFZ8rfNbxWo9Vc4a2ENo7w7exXb9dn9ppA&s";
+
+        return (
+          <div
+            className={
+              sender == "robot" ? "chat-message-robot" : "chat-message-user"
+            }
+          >
+            {sender == "robot" && <img src={robotLogo} alt="prf" width="50" />}
+            <div className="chat-message-text">{message}</div>
+            {sender != "robot" && <img src={userLogo} alt="prf" width="50" />}
+          </div>
+        );
+      }
+
+      function ChatMessages({ chatMessages }) {
+        const chatMessageRef = React.useRef(null);
+        React.useEffect(() => {
+          const containerElem = chatMessageRef.current;
+          if (containerElem) {
+            containerElem.scrollTop = containerElem.scrollHeight;
+          }
+        }, [chatMessages]);
+        return (
+          <div className="chat-messages-container" ref={chatMessageRef}>
+            {chatMessages.map((chatmessage) => {
+              return (
+                <>
+                  <ChatMessage
+                    message={chatmessage.message}
+                    sender={chatmessage.sender}
+                    key={chatmessage.id}
+                  />
+                </>
+              );
+            })}
+          </div>
+        );
+      }
+
+      function App() {
+        const [chatMessages, setChatMessages] = React.useState([]);
+        return (
+          <div className="app-container">
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
+            <ChatMessages chatMessages={chatMessages} />
+            <ChatInput
+              chatMessages={chatMessages}
+              setChatMessages={setChatMessages}
+            />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("js-container"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>
