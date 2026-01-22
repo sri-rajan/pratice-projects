@@ -27,13 +27,13 @@
 }
 
 .checkout-header .logo {
-  height: 26px;
+  height: 80px;
   margin-top: 0px;
 }
 
-.checkout-header .mobile-logo {
+/* .checkout-header .mobile-logo {
   display: none;
-}
+} */
 
 /* @media is used to create responsive design (making the
    website look good on any screen size). This @media
@@ -44,14 +44,14 @@
     width: auto;
   }
 
-  .checkout-header .logo {
+  /* .checkout-header .logo {
     display: none;
-  }
+  } */
 
-  .checkout-header .mobile-logo {
+  /* .checkout-header .mobile-logo {
     display: inline-block;
     height: 26px;
-  }
+  } */
 }
 
 .checkout-header .checkout-header-middle-section {

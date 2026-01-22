@@ -39,15 +39,15 @@
 }
 
 .header .logo {
-  height: 26px;
+  height: 80px;
   margin-top: 1px;
 }
 
-.header .mobile-logo {
+/* .header .mobile-logo {
   display: none;
-}
+} */
 
-@media (max-width: 675px) {
+/* @media (max-width: 675px) {
   .header .logo {
     display: none;
   }
@@ -57,7 +57,7 @@
     height: 26px;
     margin-top: 1px;
   }
-}
+} */
 
 .header .middle-section {
   flex: 1;
