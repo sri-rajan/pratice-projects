@@ -1,3 +1,4 @@
+import { formateMoney } from "../utils/money";
 import "./Product.css";
 
 function Product(props) {
@@ -18,7 +19,7 @@ function Product(props) {
         <div className="product-rating-count link-primary">{rating.count}</div>
       </div>
 
-      <div className="product-price">${(priceCents / 100).toFixed(2)}</div>
+      <div className="product-price">{formateMoney(priceCents)}</div>
 
       <div className="product-quantity-container">
         <select>
