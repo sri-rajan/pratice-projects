@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { formateMoney } from "../utils/money";
+import { formateMoney } from "../../utils/money";
 import "./Cart.css";
 
 function Cart(props) {

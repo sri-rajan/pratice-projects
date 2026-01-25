@@ -1,55 +1,23 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-import { Cart } from "../components/Cart";
+import { Cart } from "./Cart";
 import "./CheckoutPage.css";
 import "./checkout-header.css";
+import { formateMoney } from "../../utils/money";
 
-const data = [
-  {
-    id: 1,
-    productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-    quantity: 2,
-    deliveryOptionId: "1",
-    createdAt: "2026-01-22T15:43:16.993Z",
-    updatedAt: "2026-01-22T15:43:16.993Z",
-    product: {
-      keywords: ["socks", "sports", "apparel"],
-      id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-      image: "images/products/athletic-cotton-socks-6-pairs.jpg",
-      name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
-      rating: { stars: 4.5, count: 87 },
-      priceCents: 1090,
-      createdAt: "2026-01-22T15:43:16.993Z",
-      updatedAt: "2026-01-22T15:43:16.993Z",
-    },
-  },
-  {
-    id: 2,
-    productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-    quantity: 1,
-    deliveryOptionId: "2",
-    createdAt: "2026-01-22T15:43:16.994Z",
-    updatedAt: "2026-01-22T15:43:16.994Z",
-    product: {
-      keywords: ["sports", "basketballs"],
-      id: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-      image: "images/products/intermediate-composite-basketball.jpg",
-      name: "Intermediate Size Basketball",
-      rating: { stars: 4, count: 127 },
-      priceCents: 2095,
-      createdAt: "2026-01-22T15:43:16.994Z",
-      updatedAt: "2026-01-22T15:43:16.994Z",
-    },
-  },
-];
 function CheckoutPage(props) {
   const { cart } = props;
   const [deliveryOptions, setDeliverOptions] = useState([]);
+  const [paymentSummary, setPaymentSummary] = useState(null);
+
   useEffect(() => {
     axios
       .get("/api/delivery-options?expand=estimatedDeliveryTime")
       .then((response) => setDeliverOptions(response.data));
+    axios
+      .get("/api/payment-summary")
+      .then((response) => setPaymentSummary(response.data));
   }, []);
   return (
     <>
@@ -96,28 +64,38 @@ function CheckoutPage(props) {
             <div className="payment-summary-title">Payment Summary</div>
 
             <div className="payment-summary-row">
-              <div>Items (3):</div>
-              <div className="payment-summary-money">$42.75</div>
+              <div>Items ({paymentSummary?.totalItems || 0}):</div>
+              <div className="payment-summary-money">
+                {formateMoney(paymentSummary?.productCostCents || 0)}
+              </div>
             </div>
 
             <div className="payment-summary-row">
               <div>Shipping &amp; handling:</div>
-              <div className="payment-summary-money">$4.99</div>
+              <div className="payment-summary-money">
+                {formateMoney(paymentSummary?.shippingCostCents || 0)}
+              </div>
             </div>
 
             <div className="payment-summary-row subtotal-row">
               <div>Total before tax:</div>
-              <div className="payment-summary-money">$47.74</div>
+              <div className="payment-summary-money">
+                {formateMoney(paymentSummary?.totalCostBefroeTaxCents || 0)}
+              </div>
             </div>
 
             <div className="payment-summary-row">
               <div>Estimated tax (10%):</div>
-              <div className="payment-summary-money">$4.77</div>
+              <div className="payment-summary-money">
+                {formateMoney(paymentSummary?.taxCents || 0)}
+              </div>
             </div>
 
             <div className="payment-summary-row total-row">
               <div>Order total:</div>
-              <div className="payment-summary-money">$52.51</div>
+              <div className="payment-summary-money">
+                {formateMoney(paymentSummary?.totalCostCents || 0)}
+              </div>
             </div>
 
             <button className="place-order-button button-primary">

@@ -1,4 +1,4 @@
-import { formateMoney } from "../utils/money";
+import { formateMoney } from "../../utils/money";
 import "./Product.css";
 
 function Product(props) {
